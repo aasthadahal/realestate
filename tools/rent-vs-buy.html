@@ -353,8 +353,12 @@
             });
         });
 
-        // Initial calculation
-        calculate();
+        // Fetch live mortgage rates and initialize
+        async function init() {
+            await updateRateInput(interestRateInput, 'thirtyYear');
+            calculate();
+        }
+        init();
     </script>
 </body>
 </html>

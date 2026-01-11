@@ -146,3 +146,87 @@ function scrollToElement(elementId) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
+
+// ============================================
+// Mortgage Rates API Integration
+// ============================================
+
+const RATES_API_URL = 'https://realestate-api.aastha-dahal.workers.dev/api/rates';
+
+// Cache for mortgage rates
+let cachedRates = null;
+let ratesCacheTime = null;
+const RATES_CACHE_DURATION = 60 * 60 * 1000; // 1 hour
+
+/**
+ * Fetch current mortgage rates from API
+ * Returns { thirtyYear: number, fifteenYear: number, source: string, lastUpdated: string }
+ */
+async function fetchMortgageRates() {
+    // Return cached rates if fresh
+    if (cachedRates && ratesCacheTime && (Date.now() - ratesCacheTime < RATES_CACHE_DURATION)) {
+        return cachedRates;
+    }
+
+    try {
+        const response = await fetch(RATES_API_URL);
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        cachedRates = {
+            thirtyYear: data.rates.thirtyYear.rate,
+            fifteenYear: data.rates.fifteenYear.rate,
+            source: data.source,
+            lastUpdated: data.lastUpdated,
+            isLive: !data.error
+        };
+        ratesCacheTime = Date.now();
+
+        return cachedRates;
+
+    } catch (error) {
+        console.error('Failed to fetch mortgage rates:', error);
+
+        // Return fallback rates
+        return {
+            thirtyYear: 6.5,
+            fifteenYear: 5.9,
+            source: 'Fallback (offline)',
+            lastUpdated: new Date().toISOString(),
+            isLive: false
+        };
+    }
+}
+
+/**
+ * Update an interest rate input field with live rates
+ * @param {HTMLInputElement} inputElement - The input to update
+ * @param {string} rateType - 'thirtyYear' or 'fifteenYear'
+ * @param {HTMLElement} [statusElement] - Optional element to show rate source
+ */
+async function updateRateInput(inputElement, rateType = 'thirtyYear', statusElement = null) {
+    try {
+        const rates = await fetchMortgageRates();
+        const rate = rates[rateType];
+
+        if (rate && inputElement) {
+            inputElement.value = rate.toFixed(2);
+            inputElement.setAttribute('data-live-rate', 'true');
+        }
+
+        if (statusElement) {
+            const dateStr = rates.lastUpdated
+                ? new Date(rates.lastUpdated).toLocaleDateString()
+                : 'Unknown';
+            statusElement.innerHTML = rates.isLive
+                ? `<span class="rate-live">Live rate as of ${dateStr}</span>`
+                : `<span class="rate-fallback">Estimated rate</span>`;
+        }
+
+    } catch (error) {
+        console.error('Error updating rate input:', error);
+    }
+}
