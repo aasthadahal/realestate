@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent vs Buy Calculator | Texas Real Estate Tools</title>
+    <meta name="description" content="Compare the true cost of renting vs buying over time. Free rent vs buy analysis tool.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <a href="../index.html" class="nav-brand">
+            <span class="nav-icon">🏠</span>
+            Texas Real Estate Tools
+        </a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+    </nav>
+
+    <main class="tool-page">
+        <div class="tool-header">
+            <a href="../index.html" class="back-link">← Back to All Tools</a>
+            <h1>Rent vs Buy Decision Tool</h1>
+            <p class="tool-description">Compare the true cost of renting vs buying over 5, 10, or 30 years.</p>
+        </div>
+
+        <div class="calculator-container">
+            <div class="calculator-inputs">
+                <h2>Rental Scenario</h2>
+
+                <div class="input-group">
+                    <label for="monthly-rent">Monthly Rent</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="monthly-rent" placeholder="2,000" value="2000">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="rent-increase">Annual Rent Increase</label>
+                    <div class="input-with-suffix">
+                        <input type="text" id="rent-increase" placeholder="3" value="3">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <span class="input-hint">Historical average: 3-5%</span>
+                </div>
+
+                <h2>Buying Scenario</h2>
+
+                <div class="input-group">
+                    <label for="home-price">Home Price</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="home-price" placeholder="350,000" value="350000">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="down-payment">Down Payment</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="down-payment" placeholder="70,000" value="70000">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="interest-rate">Mortgage Rate</label>
+                    <div class="input-with-suffix">
+                        <input type="text" id="interest-rate" placeholder="6.5" value="6.5">
+                        <span class="input-suffix">%</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="property-tax">Property Tax Rate</label>
+                    <div class="input-with-suffix">
+                        <input type="text" id="property-tax" placeholder="2.2" value="2.2">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <span class="input-hint">Texas average ~2.2%</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="home-appreciation">Home Appreciation</label>
+                    <div class="input-with-suffix">
+                        <input type="text" id="home-appreciation" placeholder="3" value="3">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <span class="input-hint">Historical average: 3-4%</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="years">Time Horizon</label>
+                    <select id="years">
+                        <option value="5">5 years</option>
+                        <option value="7" selected>7 years</option>
+                        <option value="10">10 years</option>
+                        <option value="15">15 years</option>
+                        <option value="30">30 years</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="investment-return">Investment Return (if renting)</label>
+                    <div class="input-with-suffix">
+                        <input type="text" id="investment-return" placeholder="7" value="7">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <span class="input-hint">Return on down payment if invested instead</span>
+                </div>
+
+                <button id="calculate-btn" class="calculate-btn">Compare Rent vs Buy</button>
+            </div>
+
+            <div class="calculator-results">
+                <h2>Comparison Results</h2>
+
+                <div class="comparison-cards">
+                    <div class="result-card comparison-rent">
+                        <span class="comparison-label">🏢 Renting</span>
+                        <span class="result-label">Total Cost After <span id="years-rent">7</span> Years</span>
+                        <span class="result-value" id="rent-total-cost">$0</span>
+                        <span class="result-note">Net cost (rent - investment gains)</span>
+                    </div>
+
+                    <div class="result-card comparison-buy">
+                        <span class="comparison-label">🏠 Buying</span>
+                        <span class="result-label">Net Position After <span id="years-buy">7</span> Years</span>
+                        <span class="result-value" id="buy-net-position">$0</span>
+                        <span class="result-note">Equity - Total housing costs</span>
+                    </div>
+                </div>
+
+                <div class="result-card result-verdict">
+                    <span class="result-label">Verdict</span>
+                    <span class="result-value verdict-text" id="verdict">Calculating...</span>
+                    <span class="result-note" id="verdict-note">Based on your inputs</span>
+                </div>
+
+                <div class="results-breakdown">
+                    <h3>Renting Breakdown</h3>
+                    <div class="breakdown-row">
+                        <span>Total Rent Paid</span>
+                        <span id="total-rent-paid">$0</span>
+                    </div>
+                    <div class="breakdown-row breakdown-positive">
+                        <span>Investment Growth (down payment)</span>
+                        <span id="investment-growth">$0</span>
+                    </div>
+                    <div class="breakdown-row breakdown-total">
+                        <span>Net Cost of Renting</span>
+                        <span id="net-rent-cost">$0</span>
+                    </div>
+                </div>
+
+                <div class="results-breakdown">
+                    <h3>Buying Breakdown</h3>
+                    <div class="breakdown-row">
+                        <span>Total Mortgage Payments</span>
+                        <span id="total-mortgage-paid">$0</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span>Total Property Taxes</span>
+                        <span id="total-property-tax">$0</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span>Total Insurance & Maintenance</span>
+                        <span id="total-insurance-maint">$0</span>
+                    </div>
+                    <div class="breakdown-row breakdown-positive">
+                        <span>Home Equity Built</span>
+                        <span id="equity-built">$0</span>
+                    </div>
+                    <div class="breakdown-row breakdown-positive">
+                        <span>Home Value (appreciated)</span>
+                        <span id="home-value-future">$0</span>
+                    </div>
+                    <div class="breakdown-row breakdown-total">
+                        <span>Net Position</span>
+                        <span id="net-buy-position">$0</span>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3>Important Considerations</h3>
+                    <ul>
+                        <li>This is a simplified comparison — actual results will vary</li>
+                        <li>Doesn't include closing costs, selling costs, or moving expenses</li>
+                        <li>Tax benefits of homeownership not included (consult a tax advisor)</li>
+                        <li>Home appreciation is not guaranteed</li>
+                        <li>Lifestyle flexibility of renting has non-financial value</li>
+                    </ul>
+                </div>
+
+                <div class="cta-section">
+                    <p>Want a detailed analysis for your specific situation?</p>
+                    <a href="mailto:hello@aasthadahal.com?subject=Rent%20vs%20Buy%20Analysis%20Request" class="cta-btn">Get Personalized Advice</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>All calculations are estimates only. Not financial advice.</p>
+        <p>Licensed Texas Real Estate Agent</p>
+        <p>Your data stays on your device — we don't store anything.</p>
+        <a href="https://aasthadahal.com" class="footer-link">← Back to aasthadahal.com</a>
+    </footer>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        // DOM Elements
+        const monthlyRentInput = document.getElementById('monthly-rent');
+        const rentIncreaseInput = document.getElementById('rent-increase');
+        const homePriceInput = document.getElementById('home-price');
+        const downPaymentInput = document.getElementById('down-payment');
+        const interestRateInput = document.getElementById('interest-rate');
+        const propertyTaxInput = document.getElementById('property-tax');
+        const homeAppreciationInput = document.getElementById('home-appreciation');
+        const yearsSelect = document.getElementById('years');
+        const investmentReturnInput = document.getElementById('investment-return');
+        const calculateBtn = document.getElementById('calculate-btn');
+
+        // Setup currency formatting
+        [monthlyRentInput, homePriceInput, downPaymentInput].forEach(setupCurrencyInput);
+
+        function calculate() {
+            // Get inputs
+            const monthlyRent = parseCurrency(monthlyRentInput.value);
+            const rentIncrease = parseFloat(rentIncreaseInput.value) / 100 || 0.03;
+            const homePrice = parseCurrency(homePriceInput.value);
+            const downPayment = parseCurrency(downPaymentInput.value);
+            const interestRate = parseFloat(interestRateInput.value) || 6.5;
+            const propertyTaxRate = parseFloat(propertyTaxInput.value) / 100 || 0.022;
+            const homeAppreciation = parseFloat(homeAppreciationInput.value) / 100 || 0.03;
+            const years = parseInt(yearsSelect.value);
+            const investmentReturn = parseFloat(investmentReturnInput.value) / 100 || 0.07;
+
+            // Update year displays
+            document.getElementById('years-rent').textContent = years;
+            document.getElementById('years-buy').textContent = years;
+
+            // === RENTING CALCULATIONS ===
+            let totalRentPaid = 0;
+            let currentRent = monthlyRent;
+            for (let year = 1; year <= years; year++) {
+                totalRentPaid += currentRent * 12;
+                currentRent *= (1 + rentIncrease);
+            }
+
+            // Investment growth of down payment
+            const investmentFinalValue = downPayment * Math.pow(1 + investmentReturn, years);
+            const investmentGrowth = investmentFinalValue - downPayment;
+            const netRentCost = totalRentPaid - investmentGrowth;
+
+            // === BUYING CALCULATIONS ===
+            const loanAmount = homePrice - downPayment;
+            const monthlyMortgage = calculateMonthlyPayment(loanAmount, interestRate, 30);
+
+            // Total mortgage payments over the period
+            const totalMortgagePayments = monthlyMortgage * 12 * years;
+
+            // Property taxes (simplified - using current home value, not appreciated)
+            let totalPropertyTax = 0;
+            let currentHomeValue = homePrice;
+            for (let year = 1; year <= years; year++) {
+                totalPropertyTax += currentHomeValue * propertyTaxRate;
+                currentHomeValue *= (1 + homeAppreciation);
+            }
+
+            // Insurance and maintenance (estimate 1.5% of home value annually)
+            const maintenanceRate = 0.015;
+            let totalInsuranceMaint = 0;
+            currentHomeValue = homePrice;
+            for (let year = 1; year <= years; year++) {
+                totalInsuranceMaint += currentHomeValue * maintenanceRate;
+                currentHomeValue *= (1 + homeAppreciation);
+            }
+
+            // Home value after appreciation
+            const futureHomeValue = homePrice * Math.pow(1 + homeAppreciation, years);
+
+            // Calculate equity built (simplified - principal paid)
+            // More accurate: use amortization schedule
+            const monthlyRate = interestRate / 100 / 12;
+            let remainingBalance = loanAmount;
+            for (let month = 1; month <= years * 12; month++) {
+                const interestPayment = remainingBalance * monthlyRate;
+                const principalPayment = monthlyMortgage - interestPayment;
+                remainingBalance -= principalPayment;
+            }
+            const equityBuilt = downPayment + (loanAmount - remainingBalance);
+
+            // Net position for buying
+            const totalBuyingCosts = totalMortgagePayments + totalPropertyTax + totalInsuranceMaint;
+            const netBuyPosition = futureHomeValue - remainingBalance - totalBuyingCosts + equityBuilt;
+
+            // Simpler net position: Future equity minus costs paid
+            const futureEquity = futureHomeValue - remainingBalance;
+            const trueBuyCost = totalBuyingCosts - (loanAmount - remainingBalance); // Costs minus principal built
+
+            // === UPDATE DISPLAY ===
+            document.getElementById('rent-total-cost').textContent = formatCurrency(netRentCost);
+            document.getElementById('buy-net-position').textContent = formatCurrency(futureEquity - trueBuyCost);
+
+            // Renting breakdown
+            document.getElementById('total-rent-paid').textContent = formatCurrency(totalRentPaid);
+            document.getElementById('investment-growth').textContent = '+' + formatCurrency(investmentGrowth);
+            document.getElementById('net-rent-cost').textContent = formatCurrency(netRentCost);
+
+            // Buying breakdown
+            document.getElementById('total-mortgage-paid').textContent = formatCurrency(totalMortgagePayments);
+            document.getElementById('total-property-tax').textContent = formatCurrency(totalPropertyTax);
+            document.getElementById('total-insurance-maint').textContent = formatCurrency(totalInsuranceMaint);
+            document.getElementById('equity-built').textContent = '+' + formatCurrency(loanAmount - remainingBalance);
+            document.getElementById('home-value-future').textContent = formatCurrency(futureHomeValue);
+            document.getElementById('net-buy-position').textContent = formatCurrency(futureEquity - trueBuyCost);
+
+            // Verdict
+            const verdictEl = document.getElementById('verdict');
+            const verdictNoteEl = document.getElementById('verdict-note');
+            const buyNetPosition = futureEquity - trueBuyCost;
+            const difference = buyNetPosition - (-netRentCost);
+
+            if (difference > 10000) {
+                verdictEl.textContent = '🏠 Buying wins';
+                verdictEl.style.color = 'var(--success)';
+                verdictNoteEl.textContent = `You'd be ${formatCurrency(difference)} better off buying`;
+            } else if (difference < -10000) {
+                verdictEl.textContent = '🏢 Renting wins';
+                verdictEl.style.color = 'var(--pink)';
+                verdictNoteEl.textContent = `You'd be ${formatCurrency(Math.abs(difference))} better off renting`;
+            } else {
+                verdictEl.textContent = '⚖️ It\'s close';
+                verdictEl.style.color = 'var(--accent)';
+                verdictNoteEl.textContent = 'Consider lifestyle factors and personal preference';
+            }
+        }
+
+        // Calculate on button click
+        calculateBtn.addEventListener('click', calculate);
+
+        // Calculate on change
+        yearsSelect.addEventListener('change', calculate);
+
+        // Calculate on Enter key
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') calculate();
+            });
+        });
+
+        // Initial calculation
+        calculate();
+    </script>
+</body>
+</html>

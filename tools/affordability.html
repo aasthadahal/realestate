@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Affordability Calculator | Texas Real Estate Tools</title>
+    <meta name="description" content="Calculate how much house you can afford based on your income, debts, and down payment. Free Texas real estate calculator.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <a href="../index.html" class="nav-brand">
+            <span class="nav-icon">🏠</span>
+            Texas Real Estate Tools
+        </a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+    </nav>
+
+    <main class="tool-page">
+        <div class="tool-header">
+            <a href="../index.html" class="back-link">← Back to All Tools</a>
+            <h1>Home Affordability Calculator</h1>
+            <p class="tool-description">See what you can realistically afford based on your income, debts, and down payment.</p>
+        </div>
+
+        <div class="calculator-container">
+            <div class="calculator-inputs">
+                <h2>Your Financial Info</h2>
+
+                <div class="input-group">
+                    <label for="annual-income">Annual Gross Income</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="annual-income" placeholder="85,000" value="85000">
+                    </div>
+                    <span class="input-hint">Before taxes</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="monthly-debts">Monthly Debt Payments</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="monthly-debts" placeholder="500" value="500">
+                    </div>
+                    <span class="input-hint">Car loans, student loans, credit cards, etc.</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="down-payment">Down Payment</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="down-payment" placeholder="50,000" value="50000">
+                    </div>
+                    <span class="input-hint">Cash you have for down payment</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="interest-rate">Interest Rate (%)</label>
+                    <div class="input-with-suffix">
+                        <input type="text" id="interest-rate" placeholder="6.5" value="6.5">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <span class="input-hint">Current mortgage rates</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="loan-term">Loan Term</label>
+                    <select id="loan-term">
+                        <option value="30" selected>30 years</option>
+                        <option value="20">20 years</option>
+                        <option value="15">15 years</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="property-tax-rate">Property Tax Rate (%)</label>
+                    <div class="input-with-suffix">
+                        <input type="text" id="property-tax-rate" placeholder="2.2" value="2.2">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <span class="input-hint">Texas average ~2.2%</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="insurance-rate">Home Insurance (annual)</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="insurance-rate" placeholder="2,400" value="2400">
+                    </div>
+                    <span class="input-hint">Estimated annual premium</span>
+                </div>
+
+                <button id="calculate-btn" class="calculate-btn">Calculate Affordability</button>
+            </div>
+
+            <div class="calculator-results">
+                <h2>What You Can Afford</h2>
+
+                <div class="result-card result-primary">
+                    <span class="result-label">Maximum Home Price</span>
+                    <span class="result-value" id="max-price">$0</span>
+                    <span class="result-note">Based on 43% DTI ratio (lender max)</span>
+                </div>
+
+                <div class="result-card result-recommended">
+                    <span class="result-label">Comfortable Range</span>
+                    <span class="result-value" id="comfortable-price">$0</span>
+                    <span class="result-note">Based on 28% DTI ratio (recommended)</span>
+                </div>
+
+                <div class="results-breakdown">
+                    <h3>Monthly Payment Breakdown</h3>
+
+                    <div class="breakdown-row">
+                        <span>Principal & Interest</span>
+                        <span id="monthly-pi">$0</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span>Property Tax</span>
+                        <span id="monthly-tax">$0</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span>Home Insurance</span>
+                        <span id="monthly-insurance">$0</span>
+                    </div>
+                    <div class="breakdown-row breakdown-total">
+                        <span>Total Monthly (PITI)</span>
+                        <span id="monthly-total">$0</span>
+                    </div>
+                </div>
+
+                <div class="results-summary">
+                    <h3>Summary</h3>
+                    <div class="summary-item">
+                        <span>Loan Amount</span>
+                        <span id="loan-amount">$0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Down Payment</span>
+                        <span id="down-payment-display">$0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Debt-to-Income Ratio</span>
+                        <span id="dti-ratio">0%</span>
+                    </div>
+                </div>
+
+                <div class="cta-section">
+                    <p>Want a personalized breakdown for a specific property?</p>
+                    <a href="mailto:hello@aasthadahal.com?subject=Home%20Affordability%20Analysis%20Request" class="cta-btn">Get Expert Review</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>All calculations are estimates only. Not financial advice.</p>
+        <p>Licensed Texas Real Estate Agent</p>
+        <p>Your data stays on your device — we don't store anything.</p>
+        <a href="https://aasthadahal.com" class="footer-link">← Back to aasthadahal.com</a>
+    </footer>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        // DOM Elements
+        const annualIncomeInput = document.getElementById('annual-income');
+        const monthlyDebtsInput = document.getElementById('monthly-debts');
+        const downPaymentInput = document.getElementById('down-payment');
+        const interestRateInput = document.getElementById('interest-rate');
+        const loanTermSelect = document.getElementById('loan-term');
+        const propertyTaxRateInput = document.getElementById('property-tax-rate');
+        const insuranceInput = document.getElementById('insurance-rate');
+        const calculateBtn = document.getElementById('calculate-btn');
+
+        // Result Elements
+        const maxPriceEl = document.getElementById('max-price');
+        const comfortablePriceEl = document.getElementById('comfortable-price');
+        const monthlyPIEl = document.getElementById('monthly-pi');
+        const monthlyTaxEl = document.getElementById('monthly-tax');
+        const monthlyInsuranceEl = document.getElementById('monthly-insurance');
+        const monthlyTotalEl = document.getElementById('monthly-total');
+        const loanAmountEl = document.getElementById('loan-amount');
+        const downPaymentDisplayEl = document.getElementById('down-payment-display');
+        const dtiRatioEl = document.getElementById('dti-ratio');
+
+        // Setup currency formatting
+        [annualIncomeInput, monthlyDebtsInput, downPaymentInput, insuranceInput].forEach(setupCurrencyInput);
+
+        function calculate() {
+            // Get inputs
+            const annualIncome = parseCurrency(annualIncomeInput.value);
+            const monthlyDebts = parseCurrency(monthlyDebtsInput.value);
+            const downPayment = parseCurrency(downPaymentInput.value);
+            const interestRate = parseFloat(interestRateInput.value) || 6.5;
+            const loanTerm = parseInt(loanTermSelect.value);
+            const propertyTaxRate = parseFloat(propertyTaxRateInput.value) || 2.2;
+            const annualInsurance = parseCurrency(insuranceInput.value);
+
+            const monthlyIncome = annualIncome / 12;
+            const monthlyInsurance = annualInsurance / 12;
+
+            // Calculate max affordable using 43% DTI (lender max)
+            const maxDTI = 0.43;
+            const maxTotalDebt = monthlyIncome * maxDTI;
+            const maxHousingPayment = maxTotalDebt - monthlyDebts;
+
+            // Calculate comfortable using 28% DTI (recommended)
+            const comfortableDTI = 0.28;
+            const comfortableHousingPayment = monthlyIncome * comfortableDTI;
+
+            // Work backwards to find home price
+            // Housing payment = P&I + Tax + Insurance
+            // We need to solve for home price where:
+            // P&I = monthlyPayment(loanAmount, rate, term)
+            // Tax = homePrice * taxRate / 12
+            // Insurance = fixed
+
+            function findHomePrice(targetPayment) {
+                // Iterative approach to find home price
+                let low = 0;
+                let high = 2000000;
+                let iterations = 0;
+
+                while (high - low > 100 && iterations < 50) {
+                    const mid = (low + high) / 2;
+                    const loanAmount = mid - downPayment;
+
+                    if (loanAmount <= 0) {
+                        low = mid;
+                        continue;
+                    }
+
+                    const pi = calculateMonthlyPayment(loanAmount, interestRate, loanTerm);
+                    const tax = (mid * propertyTaxRate / 100) / 12;
+                    const totalPayment = pi + tax + monthlyInsurance;
+
+                    if (totalPayment < targetPayment) {
+                        low = mid;
+                    } else {
+                        high = mid;
+                    }
+                    iterations++;
+                }
+
+                return Math.floor((low + high) / 2);
+            }
+
+            const maxHomePrice = findHomePrice(maxHousingPayment);
+            const comfortableHomePrice = findHomePrice(comfortableHousingPayment);
+
+            // Calculate breakdown for comfortable price
+            const loanAmount = comfortableHomePrice - downPayment;
+            const monthlyPI = calculateMonthlyPayment(loanAmount, interestRate, loanTerm);
+            const monthlyTax = (comfortableHomePrice * propertyTaxRate / 100) / 12;
+            const totalMonthly = monthlyPI + monthlyTax + monthlyInsurance;
+            const actualDTI = ((totalMonthly + monthlyDebts) / monthlyIncome) * 100;
+
+            // Update display
+            maxPriceEl.textContent = formatCurrency(maxHomePrice);
+            comfortablePriceEl.textContent = formatCurrency(comfortableHomePrice);
+            monthlyPIEl.textContent = formatCurrency(monthlyPI);
+            monthlyTaxEl.textContent = formatCurrency(monthlyTax);
+            monthlyInsuranceEl.textContent = formatCurrency(monthlyInsurance);
+            monthlyTotalEl.textContent = formatCurrency(totalMonthly);
+            loanAmountEl.textContent = formatCurrency(loanAmount);
+            downPaymentDisplayEl.textContent = formatCurrency(downPayment);
+            dtiRatioEl.textContent = formatPercent(actualDTI, 1);
+        }
+
+        // Calculate on button click
+        calculateBtn.addEventListener('click', calculate);
+
+        // Calculate on Enter key
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') calculate();
+            });
+        });
+
+        // Initial calculation
+        calculate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Texas Property Tax Estimator | Texas Real Estate Tools</title>
+    <meta name="description" content="Estimate your annual property taxes using real Texas county rates. Free property tax calculator.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <a href="../index.html" class="nav-brand">
+            <span class="nav-icon">🏠</span>
+            Texas Real Estate Tools
+        </a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+    </nav>
+
+    <main class="tool-page">
+        <div class="tool-header">
+            <a href="../index.html" class="back-link">← Back to All Tools</a>
+            <h1>Texas Property Tax Estimator</h1>
+            <p class="tool-description">Estimate your annual property taxes using real Texas county rates.</p>
+        </div>
+
+        <div class="calculator-container">
+            <div class="calculator-inputs">
+                <h2>Property Details</h2>
+
+                <div class="input-group">
+                    <label for="home-value">Home Value</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="home-value" placeholder="350,000" value="350000">
+                    </div>
+                    <span class="input-hint">Market value or purchase price</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="county-select">Texas County</label>
+                    <select id="county-select">
+                        <!-- Populated by JavaScript -->
+                    </select>
+                    <span class="input-hint">Select your county for accurate rates</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="homestead-exempt">Homestead Exemption</label>
+                    <select id="homestead-exempt">
+                        <option value="yes" selected>Yes - Primary residence</option>
+                        <option value="no">No - Investment/rental property</option>
+                    </select>
+                    <span class="input-hint">Texas homestead exemption reduces taxable value</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="over-65">Age 65+ or Disabled</label>
+                    <select id="over-65">
+                        <option value="no" selected>No</option>
+                        <option value="yes">Yes - Additional exemption</option>
+                    </select>
+                    <span class="input-hint">Additional $10,000 exemption for seniors/disabled</span>
+                </div>
+
+                <button id="calculate-btn" class="calculate-btn">Calculate Property Tax</button>
+            </div>
+
+            <div class="calculator-results">
+                <h2>Your Property Tax Estimate</h2>
+
+                <div class="result-card result-primary">
+                    <span class="result-label">Annual Property Tax</span>
+                    <span class="result-value" id="annual-tax">$0</span>
+                    <span class="result-note">Estimated annual payment</span>
+                </div>
+
+                <div class="result-card result-secondary">
+                    <span class="result-label">Monthly Tax (for budgeting)</span>
+                    <span class="result-value" id="monthly-tax">$0</span>
+                    <span class="result-note">Often escrowed with mortgage</span>
+                </div>
+
+                <div class="results-breakdown">
+                    <h3>Calculation Breakdown</h3>
+
+                    <div class="breakdown-row">
+                        <span>Home Market Value</span>
+                        <span id="market-value">$0</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span>Homestead Exemption</span>
+                        <span id="homestead-amount">-$0</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span>Senior/Disabled Exemption</span>
+                        <span id="senior-amount">-$0</span>
+                    </div>
+                    <div class="breakdown-row breakdown-subtotal">
+                        <span>Taxable Value</span>
+                        <span id="taxable-value">$0</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span>Tax Rate (<span id="county-name">County</span>)</span>
+                        <span id="tax-rate">0%</span>
+                    </div>
+                    <div class="breakdown-row breakdown-total">
+                        <span>Annual Tax</span>
+                        <span id="annual-tax-breakdown">$0</span>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3>About Texas Property Taxes</h3>
+                    <ul>
+                        <li>Texas has no state income tax, but property taxes are higher than average</li>
+                        <li>Rates vary significantly by county and school district</li>
+                        <li>Homestead exemption: Up to $100,000 off school taxes (2024)</li>
+                        <li>Actual tax bills include county, city, school, and special district taxes</li>
+                    </ul>
+                </div>
+
+                <div class="cta-section">
+                    <p>Need help understanding your property tax bill?</p>
+                    <a href="mailto:hello@aasthadahal.com?subject=Property%20Tax%20Question" class="cta-btn">Get Expert Help</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>All calculations are estimates only. Not financial advice.</p>
+        <p>Licensed Texas Real Estate Agent</p>
+        <p>Your data stays on your device — we don't store anything.</p>
+        <a href="https://aasthadahal.com" class="footer-link">← Back to aasthadahal.com</a>
+    </footer>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        // DOM Elements
+        const homeValueInput = document.getElementById('home-value');
+        const countySelect = document.getElementById('county-select');
+        const homesteadSelect = document.getElementById('homestead-exempt');
+        const over65Select = document.getElementById('over-65');
+        const calculateBtn = document.getElementById('calculate-btn');
+
+        // Result Elements
+        const annualTaxEl = document.getElementById('annual-tax');
+        const monthlyTaxEl = document.getElementById('monthly-tax');
+        const marketValueEl = document.getElementById('market-value');
+        const homesteadAmountEl = document.getElementById('homestead-amount');
+        const seniorAmountEl = document.getElementById('senior-amount');
+        const taxableValueEl = document.getElementById('taxable-value');
+        const countyNameEl = document.getElementById('county-name');
+        const taxRateEl = document.getElementById('tax-rate');
+        const annualTaxBreakdownEl = document.getElementById('annual-tax-breakdown');
+
+        // Setup currency formatting
+        setupCurrencyInput(homeValueInput);
+
+        // Populate county dropdown
+        function populateCounties() {
+            const counties = getTexasCounties();
+            countySelect.innerHTML = counties.map(county =>
+                `<option value="${county.value}">${county.name} (${county.rate}%)</option>`
+            ).join('');
+
+            // Default to Dallas
+            countySelect.value = 'dallas';
+        }
+
+        function calculate() {
+            // Get inputs
+            const homeValue = parseCurrency(homeValueInput.value);
+            const countyKey = countySelect.value;
+            const hasHomestead = homesteadSelect.value === 'yes';
+            const isOver65 = over65Select.value === 'yes';
+
+            const county = TEXAS_COUNTY_TAX_RATES[countyKey];
+            const taxRate = county ? county.rate : 2.2;
+            const countyName = county ? county.name : 'Unknown County';
+
+            // Calculate exemptions
+            // Texas homestead exemption: $100,000 off school taxes (simplified as overall reduction)
+            // We'll estimate this as ~40% of total tax rate being school taxes
+            const homesteadExemption = hasHomestead ? 100000 * 0.4 : 0;
+            const seniorExemption = isOver65 ? 10000 : 0;
+
+            // Calculate taxable value
+            let taxableValue = homeValue;
+            if (hasHomestead) {
+                taxableValue = Math.max(0, homeValue - 100000); // Simplified homestead
+            }
+            if (isOver65) {
+                taxableValue = Math.max(0, taxableValue - 10000);
+            }
+
+            // Calculate tax
+            const annualTax = taxableValue * (taxRate / 100);
+            const monthlyTax = annualTax / 12;
+
+            // Update display
+            annualTaxEl.textContent = formatCurrency(annualTax);
+            monthlyTaxEl.textContent = formatCurrency(monthlyTax);
+            marketValueEl.textContent = formatCurrency(homeValue);
+            homesteadAmountEl.textContent = hasHomestead ? '-$100,000' : '-$0';
+            seniorAmountEl.textContent = isOver65 ? '-$10,000' : '-$0';
+            taxableValueEl.textContent = formatCurrency(taxableValue);
+            countyNameEl.textContent = countyName.split('(')[0].trim();
+            taxRateEl.textContent = formatPercent(taxRate);
+            annualTaxBreakdownEl.textContent = formatCurrency(annualTax);
+        }
+
+        // Calculate on button click
+        calculateBtn.addEventListener('click', calculate);
+
+        // Calculate on change
+        [countySelect, homesteadSelect, over65Select].forEach(el => {
+            el.addEventListener('change', calculate);
+        });
+
+        // Calculate on Enter key
+        homeValueInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') calculate();
+        });
+
+        // Initialize
+        populateCounties();
+        calculate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Net Proceeds Calculator | Texas Real Estate Tools</title>
+    <meta name="description" content="Calculate exactly what you'll walk away with after selling your home. Free Texas seller net sheet calculator.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <a href="../index.html" class="nav-brand">
+            <span class="nav-icon">🏠</span>
+            Texas Real Estate Tools
+        </a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+    </nav>
+
+    <main class="tool-page">
+        <div class="tool-header">
+            <a href="../index.html" class="back-link">← Back to All Tools</a>
+            <h1>Seller Net Proceeds Calculator</h1>
+            <p class="tool-description">Calculate exactly what you'll walk away with after selling your home.</p>
+        </div>
+
+        <div class="calculator-container">
+            <div class="calculator-inputs">
+                <h2>Sale Details</h2>
+
+                <div class="input-group">
+                    <label for="sale-price">Expected Sale Price</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="sale-price" placeholder="450,000" value="450000">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="mortgage-balance">Remaining Mortgage Balance</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="mortgage-balance" placeholder="280,000" value="280000">
+                    </div>
+                    <span class="input-hint">Current payoff amount</span>
+                </div>
+
+                <h2>Selling Costs</h2>
+
+                <div class="input-group">
+                    <label for="agent-commission">Agent Commission</label>
+                    <div class="input-with-suffix">
+                        <input type="text" id="agent-commission" placeholder="5" value="5">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <span class="input-hint">Total commission (typically 5-6%)</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="title-insurance">Title Insurance & Closing</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="title-insurance" placeholder="3,500" value="3500">
+                    </div>
+                    <span class="input-hint">Title insurance, escrow fees, etc.</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="repairs">Repairs & Concessions</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="repairs" placeholder="5,000" value="5000">
+                    </div>
+                    <span class="input-hint">Agreed repairs, buyer credits, etc.</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="prorated-taxes">Prorated Property Taxes</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="prorated-taxes" placeholder="2,000" value="2000">
+                    </div>
+                    <span class="input-hint">Taxes owed up to closing date</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="other-costs">Other Costs</label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">$</span>
+                        <input type="text" id="other-costs" placeholder="1,000" value="1000">
+                    </div>
+                    <span class="input-hint">HOA fees, attorney, staging, etc.</span>
+                </div>
+
+                <button id="calculate-btn" class="calculate-btn">Calculate Net Proceeds</button>
+            </div>
+
+            <div class="calculator-results">
+                <h2>Your Net Proceeds</h2>
+
+                <div class="result-card result-primary">
+                    <span class="result-label">Estimated Net Proceeds</span>
+                    <span class="result-value" id="net-proceeds">$0</span>
+                    <span class="result-note">What you walk away with</span>
+                </div>
+
+                <div class="results-breakdown">
+                    <h3>Proceeds Breakdown</h3>
+
+                    <div class="breakdown-row breakdown-positive">
+                        <span>Sale Price</span>
+                        <span id="sale-price-display">$0</span>
+                    </div>
+
+                    <div class="breakdown-section-title">Less: Costs & Payoffs</div>
+
+                    <div class="breakdown-row breakdown-negative">
+                        <span>Mortgage Payoff</span>
+                        <span id="mortgage-display">-$0</span>
+                    </div>
+                    <div class="breakdown-row breakdown-negative">
+                        <span>Agent Commission (<span id="commission-percent">5</span>%)</span>
+                        <span id="commission-display">-$0</span>
+                    </div>
+                    <div class="breakdown-row breakdown-negative">
+                        <span>Title & Closing Costs</span>
+                        <span id="title-display">-$0</span>
+                    </div>
+                    <div class="breakdown-row breakdown-negative">
+                        <span>Repairs & Concessions</span>
+                        <span id="repairs-display">-$0</span>
+                    </div>
+                    <div class="breakdown-row breakdown-negative">
+                        <span>Prorated Property Taxes</span>
+                        <span id="taxes-display">-$0</span>
+                    </div>
+                    <div class="breakdown-row breakdown-negative">
+                        <span>Other Costs</span>
+                        <span id="other-display">-$0</span>
+                    </div>
+
+                    <div class="breakdown-row breakdown-total">
+                        <span>Total Costs</span>
+                        <span id="total-costs">-$0</span>
+                    </div>
+
+                    <div class="breakdown-row breakdown-final">
+                        <span>Net Proceeds</span>
+                        <span id="net-proceeds-breakdown">$0</span>
+                    </div>
+                </div>
+
+                <div class="results-summary">
+                    <h3>Quick Stats</h3>
+                    <div class="summary-item">
+                        <span>Equity (before costs)</span>
+                        <span id="equity-display">$0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Total Selling Costs</span>
+                        <span id="selling-costs-display">$0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Cost as % of Sale</span>
+                        <span id="cost-percent-display">0%</span>
+                    </div>
+                </div>
+
+                <div class="cta-section">
+                    <p>Want an accurate net sheet for your specific property?</p>
+                    <a href="mailto:hello@aasthadahal.com?subject=Seller%20Net%20Sheet%20Request" class="cta-btn">Get Precise Numbers</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>All calculations are estimates only. Not financial advice.</p>
+        <p>Licensed Texas Real Estate Agent</p>
+        <p>Your data stays on your device — we don't store anything.</p>
+        <a href="https://aasthadahal.com" class="footer-link">← Back to aasthadahal.com</a>
+    </footer>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        // DOM Elements
+        const salePriceInput = document.getElementById('sale-price');
+        const mortgageBalanceInput = document.getElementById('mortgage-balance');
+        const agentCommissionInput = document.getElementById('agent-commission');
+        const titleInsuranceInput = document.getElementById('title-insurance');
+        const repairsInput = document.getElementById('repairs');
+        const proratedTaxesInput = document.getElementById('prorated-taxes');
+        const otherCostsInput = document.getElementById('other-costs');
+        const calculateBtn = document.getElementById('calculate-btn');
+
+        // Result Elements
+        const netProceedsEl = document.getElementById('net-proceeds');
+        const salePriceDisplayEl = document.getElementById('sale-price-display');
+        const mortgageDisplayEl = document.getElementById('mortgage-display');
+        const commissionPercentEl = document.getElementById('commission-percent');
+        const commissionDisplayEl = document.getElementById('commission-display');
+        const titleDisplayEl = document.getElementById('title-display');
+        const repairsDisplayEl = document.getElementById('repairs-display');
+        const taxesDisplayEl = document.getElementById('taxes-display');
+        const otherDisplayEl = document.getElementById('other-display');
+        const totalCostsEl = document.getElementById('total-costs');
+        const netProceedsBreakdownEl = document.getElementById('net-proceeds-breakdown');
+        const equityDisplayEl = document.getElementById('equity-display');
+        const sellingCostsDisplayEl = document.getElementById('selling-costs-display');
+        const costPercentDisplayEl = document.getElementById('cost-percent-display');
+
+        // Setup currency formatting
+        [salePriceInput, mortgageBalanceInput, titleInsuranceInput, repairsInput, proratedTaxesInput, otherCostsInput].forEach(setupCurrencyInput);
+
+        function calculate() {
+            // Get inputs
+            const salePrice = parseCurrency(salePriceInput.value);
+            const mortgageBalance = parseCurrency(mortgageBalanceInput.value);
+            const commissionPercent = parseFloat(agentCommissionInput.value) || 5;
+            const titleInsurance = parseCurrency(titleInsuranceInput.value);
+            const repairs = parseCurrency(repairsInput.value);
+            const proratedTaxes = parseCurrency(proratedTaxesInput.value);
+            const otherCosts = parseCurrency(otherCostsInput.value);
+
+            // Calculate costs
+            const commission = salePrice * (commissionPercent / 100);
+            const totalSellingCosts = commission + titleInsurance + repairs + proratedTaxes + otherCosts;
+            const totalCosts = mortgageBalance + totalSellingCosts;
+            const netProceeds = salePrice - totalCosts;
+            const equity = salePrice - mortgageBalance;
+            const costPercent = (totalSellingCosts / salePrice) * 100;
+
+            // Update display
+            netProceedsEl.textContent = formatCurrency(netProceeds);
+            salePriceDisplayEl.textContent = formatCurrency(salePrice);
+            mortgageDisplayEl.textContent = '-' + formatCurrency(mortgageBalance);
+            commissionPercentEl.textContent = commissionPercent;
+            commissionDisplayEl.textContent = '-' + formatCurrency(commission);
+            titleDisplayEl.textContent = '-' + formatCurrency(titleInsurance);
+            repairsDisplayEl.textContent = '-' + formatCurrency(repairs);
+            taxesDisplayEl.textContent = '-' + formatCurrency(proratedTaxes);
+            otherDisplayEl.textContent = '-' + formatCurrency(otherCosts);
+            totalCostsEl.textContent = '-' + formatCurrency(totalCosts);
+            netProceedsBreakdownEl.textContent = formatCurrency(netProceeds);
+            equityDisplayEl.textContent = formatCurrency(equity);
+            sellingCostsDisplayEl.textContent = formatCurrency(totalSellingCosts);
+            costPercentDisplayEl.textContent = formatPercent(costPercent, 1);
+
+            // Color the net proceeds based on positive/negative
+            if (netProceeds < 0) {
+                netProceedsEl.style.color = 'var(--error)';
+                netProceedsBreakdownEl.style.color = 'var(--error)';
+            } else {
+                netProceedsEl.style.color = 'var(--success)';
+                netProceedsBreakdownEl.style.color = 'var(--success)';
+            }
+        }
+
+        // Calculate on button click
+        calculateBtn.addEventListener('click', calculate);
+
+        // Calculate on Enter key
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') calculate();
+            });
+        });
+
+        // Initial calculation
+        calculate();
+    </script>
+</body>
+</html>
